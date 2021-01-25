@@ -16,31 +16,33 @@ inputs=[]
 for i in range(0,len(my_lines)):
     lines_dict=json.loads(my_lines[i]) #returns a dictionary
     
-    if lines_dict['label'] == 0 or lines_dict[label] == 1:
-        label.append(lines_dict['label'])
-    
-    new_input=[]
-    new_input.append(lines_dict["general"]["has_debug"])
-    new_input.append(lines_dict["general"]["has_tls"])
-    new_input.append(lines_dict["general"]["has_relocations"])
-    new_input.append(lines_dict["general"]["has_signature"])
-    new_input.append(lines_dict['general']['has_resources'])
-    
-    if lines_dict['general']['imports']>0:#if has imports is 1 if not is 0
-        new_input.append(1)
-    else:
-        new_input.append(0)
+    label=lines_dict['label']
+    if label == 0 or label == 1:
+               
+        new_input=[]
         
-    if lines_dict['general']['exports']>0:#if has exports is 1 if not is 0
-        new_input.append(1)
-    else:
-        new_input.append(0)
-
+        new_input.append(label)
+        new_input.append(lines_dict['general']['has_debug'])
+        new_input.append(lines_dict['general']['has_tls'])
+        new_input.append(lines_dict['general']['has_relocations'])
+        new_input.append(lines_dict['general']['has_signature'])
+        new_input.append(lines_dict['general']['has_resources'])
     
-    for section in lines_dict['section']['sections']:
-        new_input.append(section['entropy'])
-        break #extract entropy from first section 
-                    
-    inputs.append(new_input)
+        if lines_dict['general']['imports']>0: #if has imports 1 if not 0
+            new_input.append(1)
+        else:
+            new_input.append(0)
+        
+        if lines_dict['general']['exports']>0:#if has exports 1 if not 0
+            new_input.append(1)
+        else:
+            new_input.append(0)
+
+        for section in lines_dict['section']['sections']:
+            new_input.append(section['entropy'])
+            break #extract entropy from first section 
+        
+           
+        inputs.append(new_input)
 
 
